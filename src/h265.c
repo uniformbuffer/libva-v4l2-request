@@ -51,52 +51,16 @@ static void h265_fill_pps(VAPictureParameterBufferHEVC *picture,
 {
 	memset(pps, 0, sizeof(*pps));
 
-	pps->dependent_slice_segment_flag =
-		slice->LongSliceFlags.fields.dependent_slice_segment_flag;
-	pps->output_flag_present_flag =
-		picture->slice_parsing_fields.bits.output_flag_present_flag;
 	pps->num_extra_slice_header_bits =
 		picture->num_extra_slice_header_bits;
-	pps->sign_data_hiding_enabled_flag =
-		picture->pic_fields.bits.sign_data_hiding_enabled_flag;
-	pps->cabac_init_present_flag =
-		picture->slice_parsing_fields.bits.cabac_init_present_flag;
 	pps->init_qp_minus26 = picture->init_qp_minus26;
-	pps->constrained_intra_pred_flag =
-		picture->pic_fields.bits.constrained_intra_pred_flag;
-	pps->transform_skip_enabled_flag =
-		picture->pic_fields.bits.transform_skip_enabled_flag;
-	pps->cu_qp_delta_enabled_flag =
-		picture->pic_fields.bits.cu_qp_delta_enabled_flag;
 	pps->diff_cu_qp_delta_depth = picture->diff_cu_qp_delta_depth;
 	pps->pps_cb_qp_offset = picture->pps_cb_qp_offset;
 	pps->pps_cr_qp_offset = picture->pps_cr_qp_offset;
-	pps->pps_slice_chroma_qp_offsets_present_flag =
-		picture->slice_parsing_fields.bits.pps_slice_chroma_qp_offsets_present_flag;
-	pps->weighted_pred_flag =
-		picture->pic_fields.bits.weighted_pred_flag;
-	pps->weighted_bipred_flag =
-		picture->pic_fields.bits.weighted_bipred_flag;
-	pps->transquant_bypass_enabled_flag =
-		picture->pic_fields.bits.transquant_bypass_enabled_flag;
-	pps->tiles_enabled_flag =
-		picture->pic_fields.bits.tiles_enabled_flag;
-	pps->entropy_coding_sync_enabled_flag =
-		picture->pic_fields.bits.entropy_coding_sync_enabled_flag;
 	pps->num_tile_columns_minus1 = picture->num_tile_columns_minus1;
 	pps->num_tile_rows_minus1 = picture->num_tile_rows_minus1;
-	pps->loop_filter_across_tiles_enabled_flag =
-		picture->pic_fields.bits.loop_filter_across_tiles_enabled_flag;
-	pps->pps_loop_filter_across_slices_enabled_flag =
-		picture->pic_fields.bits.pps_loop_filter_across_slices_enabled_flag;
-	pps->deblocking_filter_override_enabled_flag =
-		picture->slice_parsing_fields.bits.deblocking_filter_override_enabled_flag;
-	pps->pps_disable_deblocking_filter_flag =
-		picture->slice_parsing_fields.bits.pps_disable_deblocking_filter_flag;
 	pps->pps_beta_offset_div2 = picture->pps_beta_offset_div2;
 	pps->pps_tc_offset_div2 = picture->pps_tc_offset_div2;
-	pps->lists_modification_present_flag =
-		picture->slice_parsing_fields.bits.lists_modification_present_flag;
 	pps->log2_parallel_merge_level_minus2 =
 		picture->log2_parallel_merge_level_minus2;
 }
@@ -107,8 +71,6 @@ static void h265_fill_sps(VAPictureParameterBufferHEVC *picture,
 	memset(sps, 0, sizeof(*sps));
 
 	sps->chroma_format_idc = picture->pic_fields.bits.chroma_format_idc;
-	sps->separate_colour_plane_flag =
-		picture->pic_fields.bits.separate_colour_plane_flag;
 	sps->pic_width_in_luma_samples = picture->pic_width_in_luma_samples;
 	sps->pic_height_in_luma_samples = picture->pic_height_in_luma_samples;
 	sps->bit_depth_luma_minus8 = picture->bit_depth_luma_minus8;
@@ -131,12 +93,6 @@ static void h265_fill_sps(VAPictureParameterBufferHEVC *picture,
 		picture->max_transform_hierarchy_depth_inter;
 	sps->max_transform_hierarchy_depth_intra =
 		picture->max_transform_hierarchy_depth_intra;
-	sps->scaling_list_enabled_flag =
-		picture->pic_fields.bits.scaling_list_enabled_flag;
-	sps->amp_enabled_flag = picture->pic_fields.bits.amp_enabled_flag;
-	sps->sample_adaptive_offset_enabled_flag =
-		picture->slice_parsing_fields.bits.sample_adaptive_offset_enabled_flag;
-	sps->pcm_enabled_flag = picture->pic_fields.bits.pcm_enabled_flag;
 	sps->pcm_sample_bit_depth_luma_minus1 =
 		picture->pcm_sample_bit_depth_luma_minus1;
 	sps->pcm_sample_bit_depth_chroma_minus1 =
@@ -145,16 +101,8 @@ static void h265_fill_sps(VAPictureParameterBufferHEVC *picture,
 		picture->log2_min_pcm_luma_coding_block_size_minus3;
 	sps->log2_diff_max_min_pcm_luma_coding_block_size =
 		picture->log2_diff_max_min_pcm_luma_coding_block_size;
-	sps->pcm_loop_filter_disabled_flag =
-		picture->pic_fields.bits.pcm_loop_filter_disabled_flag;
 	sps->num_short_term_ref_pic_sets = picture->num_short_term_ref_pic_sets;
-	sps->long_term_ref_pics_present_flag =
-		picture->slice_parsing_fields.bits.long_term_ref_pics_present_flag;
 	sps->num_long_term_ref_pics_sps = picture->num_long_term_ref_pic_sps;
-	sps->sps_temporal_mvp_enabled_flag =
-		picture->slice_parsing_fields.bits.sps_temporal_mvp_enabled_flag;
-	sps->strong_intra_smoothing_enabled_flag =
-		picture->pic_fields.bits.strong_intra_smoothing_enabled_flag;
 }
 
 static void h265_fill_slice_params(VAPictureParameterBufferHEVC *picture,
@@ -222,38 +170,21 @@ static void h265_fill_slice_params(VAPictureParameterBufferHEVC *picture,
 		slice->LongSliceFlags.fields.color_plane_id;
 	slice_params->slice_pic_order_cnt =
 		picture->CurrPic.pic_order_cnt;
-	slice_params->slice_sao_luma_flag =
-		slice->LongSliceFlags.fields.slice_sao_luma_flag;
-	slice_params->slice_sao_chroma_flag =
-		slice->LongSliceFlags.fields.slice_sao_chroma_flag;
-	slice_params->slice_temporal_mvp_enabled_flag =
-		slice->LongSliceFlags.fields.slice_temporal_mvp_enabled_flag;
 	slice_params->num_ref_idx_l0_active_minus1 =
 		slice->num_ref_idx_l0_active_minus1;
 	slice_params->num_ref_idx_l1_active_minus1 =
 		slice->num_ref_idx_l1_active_minus1;
-	slice_params->mvd_l1_zero_flag =
-		slice->LongSliceFlags.fields.mvd_l1_zero_flag;
-	slice_params->cabac_init_flag =
-		slice->LongSliceFlags.fields.cabac_init_flag;
-	slice_params->collocated_from_l0_flag =
-		slice->LongSliceFlags.fields.collocated_from_l0_flag;
 	slice_params->collocated_ref_idx = slice->collocated_ref_idx;
 	slice_params->five_minus_max_num_merge_cand =
 		slice->five_minus_max_num_merge_cand;
-	slice_params->use_integer_mv_flag = 0;
 	slice_params->slice_qp_delta = slice->slice_qp_delta;
 	slice_params->slice_cb_qp_offset = slice->slice_cb_qp_offset;
 	slice_params->slice_cr_qp_offset = slice->slice_cr_qp_offset;
 	slice_params->slice_act_y_qp_offset = 0;
 	slice_params->slice_act_cb_qp_offset = 0;
 	slice_params->slice_act_cr_qp_offset = 0;
-	slice_params->slice_deblocking_filter_disabled_flag =
-		slice->LongSliceFlags.fields.slice_deblocking_filter_disabled_flag;
 	slice_params->slice_beta_offset_div2 = slice->slice_beta_offset_div2;
 	slice_params->slice_tc_offset_div2 = slice->slice_tc_offset_div2;
-	slice_params->slice_loop_filter_across_slices_enabled_flag =
-		slice->LongSliceFlags.fields.slice_loop_filter_across_slices_enabled_flag;
 
 	if (picture->CurrPic.flags & VA_PICTURE_HEVC_FIELD_PIC) {
 		if (picture->CurrPic.flags & VA_PICTURE_HEVC_BOTTOM_FIELD)
