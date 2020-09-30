@@ -1,3 +1,41 @@
+Hi,
+this is a fork that i'm trying to get working on Pinephone, but should work on every Allwinner device that support cedrus.
+I'm absolutly not an expert in low level stuff so do not take my words (and my works) as reliable.
+I got a lot of information on https://xnux.eu regarding Pinephone, especially https://xnux.eu/devices/feature/cedrus-pp.html where there are some instruction to hardware decode.
+
+Compile using
+```
+git clone https://github.com/uniformbuffer/libva-v4l2-request
+cd ./libva-v4l2-request
+meson build
+cd ./build
+meson configure -Dbuildtype=release -Dprefix=*path to the install folder, if none /usr/local/lib is used*
+ninja
+ninja install
+```
+
+To try vaapi hardware decoding.
+`export LIBVA_DRIVER_NAME=v4l2_request`
+
+On Pinephone the video device for cedrus is /dev/video1.
+On other device you must look for "cedrus" at /sys/class/video4linux/*/name
+`export LIBVA_V4L2_REQUEST_VIDEO_PATH=/dev/video1`
+
+On Pinephone the media device for cedrus is /dev/media0 that is used by default, so there is no need to specify.
+On other device you must look for "cedrus" at /sys/bus/media/devices/*/model
+`export LIBVA_V4L2_REQUEST_MEDIA_PATH=/dev/media0`
+
+Use the install folder specified on meson before
+`export LIBVA_DRIVERS_PATH=/*path to the install folder*/lib/dri`
+
+Then on the same terminal run
+`mpv --hwdec=vaapi-copy video.mp4`
+
+You can also use 
+`mpv --hwdec=yes video.mp4`
+but this mpv probing for hardware devices, enabling the camera for a sec (you can hear the camera shutter opening).
+I don't like to trigger mechanical parts if there is no need.
+
 # v4l2-request libVA Backend
 
 ## About
