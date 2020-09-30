@@ -192,7 +192,7 @@ VAStatus RequestCreateContext(VADriverContextP context, VAConfigID config_id,
 	context_object->flags = flags;
 
 	*context_id = id;
-
+  printf("Created context 0x%x\n", id);
 	status = VA_STATUS_SUCCESS;
 	goto complete;
 
@@ -259,5 +259,6 @@ VAStatus RequestDestroyContext(VADriverContextP context, VAContextID context_id)
 	if (rc < 0)
 		return VA_STATUS_ERROR_OPERATION_FAILED;
 
+  printf("Destroyed context 0x%x\n", context_id);
 	return VA_STATUS_SUCCESS;
 }
