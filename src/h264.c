@@ -246,6 +246,10 @@ static void h264_va_picture_to_v4l2(struct request_data *driver_data,
 	pps->chroma_qp_index_offset = VAPicture->chroma_qp_index_offset;
 	pps->second_chroma_qp_index_offset =
 		VAPicture->second_chroma_qp_index_offset;
+	pps->num_ref_idx_l0_default_active_minus1 =
+		VAPicture->num_ref_idx_l0_default_active_minus1;
+	pps->num_ref_idx_l1_default_active_minus1 =
+		VAPicture->num_ref_idx_l1_default_active_minus1;
 
 	if (VAPicture->pic_fields.bits.entropy_coding_mode_flag)
 		pps->flags |= V4L2_H264_PPS_FLAG_ENTROPY_CODING_MODE;
@@ -313,6 +317,10 @@ static void h264_va_matrix_to_v4l2(struct request_data *driver_data,
 	 */
 	memcpy(v4l2_matrix->scaling_list_8x8[0], &VAMatrix->ScalingList8x8[0],
 	       sizeof(v4l2_matrix->scaling_list_8x8[0]));
+	/* FIXME --> */
+	memcpy(v4l2_matrix->scaling_list_8x8[1], &VAMatrix->ScalingList8x8[1],
+	       sizeof(v4l2_matrix->scaling_list_8x8[1]));
+	/* <-- FIXME */
 	memcpy(v4l2_matrix->scaling_list_8x8[3], &VAMatrix->ScalingList8x8[1],
 	       sizeof(v4l2_matrix->scaling_list_8x8[3]));
 }
@@ -352,6 +360,9 @@ static void h264_va_slice_to_v4l2(struct request_data *driver_data,
 	slice->first_mb_in_slice = VASlice->first_mb_in_slice;
 	slice->slice_type = VASlice->slice_type;
 	slice->frame_num = VAPicture->frame_num;
+	slice->idr_pic_id = VASlice->idr_pic_id;
+	slice->dec_ref_pic_marking_bit_size = VASlice->dec_ref_pic_marking_bit_size;
+	slice->pic_order_cnt_bit_size = VASlice->pic_order_cnt_bit_size;
 	slice->cabac_init_idc = VASlice->cabac_init_idc;
 	slice->slice_qp_delta = VASlice->slice_qp_delta;
 	slice->disable_deblocking_filter_idc =
@@ -436,7 +447,7 @@ int h264_get_controls(struct request_data *driver_data,
 	};
 	int rc;
 
-	rc = v4l2_get_controls(driver_data->video_fd, -1, controls, 2);
+	rc = v4l2_get_controls(context->video_fd, -1, controls, 2);
 	if (rc < 0)
 		return VA_STATUS_ERROR_OPERATION_FAILED;
 
@@ -539,7 +550,7 @@ int h264_set_controls(struct request_data *driver_data,
 		}
 	};
 
-	rc = v4l2_set_controls(driver_data->video_fd, surface->request_fd,
+	rc = v4l2_set_controls(context->video_fd, surface->request_fd,
 			       controls, 5);
 	if (rc < 0)
 		return VA_STATUS_ERROR_OPERATION_FAILED;

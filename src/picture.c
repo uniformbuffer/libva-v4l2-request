@@ -199,11 +199,13 @@ static VAStatus codec_set_controls(struct request_data *driver_data,
 			return VA_STATUS_ERROR_OPERATION_FAILED;
 		break;
 
+#if 1
 	case VAProfileHEVCMain:
 		rc = h265_set_controls(driver_data, context, surface_object);
 		if (rc < 0)
 			return VA_STATUS_ERROR_OPERATION_FAILED;
 		break;
+#endif
 
 	default:
 		return VA_STATUS_ERROR_UNSUPPORTED_PROFILE;
@@ -231,6 +233,7 @@ VAStatus RequestBeginPicture(VADriverContextP context, VAContextID context_id,
 		RequestSyncSurface(context, surface_id);
 
 	surface_object->status = VASurfaceRendering;
+	surface_object->context_id = context_id;
 	context_object->render_surface_id = surface_id;
 
 	return VA_STATUS_SUCCESS;
@@ -291,8 +294,8 @@ VAStatus RequestEndPicture(VADriverContextP context, VAContextID context_id)
 	if (video_format == NULL)
 		return VA_STATUS_ERROR_OPERATION_FAILED;
 
-	output_type = v4l2_type_video_output(video_format->v4l2_mplane);
-	capture_type = v4l2_type_video_capture(video_format->v4l2_mplane);
+	output_type = v4l2_type_video_output(driver_data->mplane);
+	capture_type = v4l2_type_video_capture(driver_data->mplane);
 
 	context_object = CONTEXT(driver_data, context_id);
 	if (context_object == NULL)
@@ -323,13 +326,14 @@ VAStatus RequestEndPicture(VADriverContextP context, VAContextID context_id)
 	if (rc != VA_STATUS_SUCCESS)
 		return rc;
 
-	rc = v4l2_queue_buffer(driver_data->video_fd, -1, capture_type, NULL,
-			       surface_object->destination_index, 0,
+	rc = v4l2_queue_dmabuf(context_object->video_fd, -1, capture_type, NULL,
+			       surface_object->destination_index,
+			       surface_object->destination_dmabuf_fds,
 			       surface_object->destination_buffers_count);
 	if (rc < 0)
 		return VA_STATUS_ERROR_OPERATION_FAILED;
 
-	rc = v4l2_queue_buffer(driver_data->video_fd, request_fd, output_type,
+	rc = v4l2_queue_buffer(context_object->video_fd, request_fd, output_type,
 			       &surface_object->timestamp,
 			       surface_object->source_index,
 			       surface_object->slices_size, 1);

@@ -62,7 +62,7 @@ VAStatus RequestCreateImage(VADriverContextP context, VAImageFormat *format,
 	if (video_format == NULL)
 		return VA_STATUS_ERROR_OPERATION_FAILED;
 
-	capture_type = v4l2_type_video_capture(video_format->v4l2_mplane);
+	capture_type = v4l2_type_video_capture(driver_data->mplane);
 
 	/*
 	 * FIXME: This should be replaced by per-pixelformat hadling to
@@ -164,8 +164,10 @@ static VAStatus copy_surface_to_image (struct request_data *driver_data,
 					image->pitches[i], image->width,
 					i == 0 ? image->height :
 						 image->height / 2);
+
 		else {
 #endif
+		{
 			memcpy(buffer_object->data + image->offsets[i],
 			       surface_object->destination_data[i],
 			       surface_object->destination_sizes[i]);
