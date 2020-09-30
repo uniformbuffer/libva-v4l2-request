@@ -240,14 +240,14 @@ VAStatus RequestDestroyContext(VADriverContextP context, VAContextID context_id)
 		return VA_STATUS_ERROR_OPERATION_FAILED;
 
 	/* Buffers liberation */
-
+/*
 	status = RequestDestroySurfaces(context, context_object->surfaces_ids,
 					context_object->surfaces_count);
 	if (status != VA_STATUS_SUCCESS)
 		return VA_STATUS_ERROR_OPERATION_FAILED;
 
 	free(context_object->surfaces_ids);
-
+*/
 	object_heap_free(&driver_data->context_heap,
 			 (struct object_base *)context_object);
 
