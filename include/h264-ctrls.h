@@ -216,4 +216,3 @@ struct v4l2_ctrl_h264_decode_params {
 };
 
 #endif
-
