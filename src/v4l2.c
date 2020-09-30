@@ -243,7 +243,7 @@ int v4l2_create_buffers(int video_fd, unsigned int type,
 
 	memset(&buffers, 0, sizeof(buffers));
 	buffers.format.type = type;
-	buffers.memory = V4L2_MEMORY_MMAP;
+	buffers.memory = V4L2_MEMORY_DMABUF;
 	buffers.count = buffers_count;
 
 	rc = ioctl(video_fd, VIDIOC_G_FMT, &buffers.format);
@@ -279,7 +279,7 @@ int v4l2_query_buffer(int video_fd, unsigned int type, unsigned int index,
 	memset(&buffer, 0, sizeof(buffer));
 
 	buffer.type = type;
-	buffer.memory = V4L2_MEMORY_MMAP;
+	buffer.memory = V4L2_MEMORY_DMABUF;
 	buffer.index = index;
 	buffer.length = buffers_count;
 	buffer.m.planes = planes;
@@ -317,7 +317,7 @@ int v4l2_request_buffers(int video_fd, unsigned int type,
 
 	memset(&buffers, 0, sizeof(buffers));
 	buffers.type = type;
-	buffers.memory = V4L2_MEMORY_MMAP;
+	buffers.memory = V4L2_MEMORY_DMABUF;
 	buffers.count = buffers_count;
 
 	rc = ioctl(video_fd, VIDIOC_REQBUFS, &buffers);
@@ -342,7 +342,7 @@ int v4l2_queue_buffer(int video_fd, int request_fd, unsigned int type,
 	memset(&buffer, 0, sizeof(buffer));
 
 	buffer.type = type;
-	buffer.memory = V4L2_MEMORY_MMAP;
+	buffer.memory = V4L2_MEMORY_DMABUF;
 	buffer.index = index;
 	buffer.length = buffers_count;
 	buffer.m.planes = planes;
@@ -381,7 +381,7 @@ int v4l2_dequeue_buffer(int video_fd, int request_fd, unsigned int type,
 	memset(&buffer, 0, sizeof(buffer));
 
 	buffer.type = type;
-	buffer.memory = V4L2_MEMORY_MMAP;
+	buffer.memory = V4L2_MEMORY_DMABUF;
 	buffer.index = index;
 	buffer.length = buffers_count;
 	buffer.m.planes = planes;
