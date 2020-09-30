@@ -33,7 +33,7 @@ Then on the same terminal run
 
 You can also use 
 `mpv --hwdec=yes video.mp4`
-but this mpv probing for hardware devices, enabling the camera for a sec (you can hear the camera shutter opening).
+but this cause mpv probing for hardware devices, enabling the camera for a sec (you can hear the camera shutter opening).
 I don't like to trigger mechanical parts if there is no need.
 
 # v4l2-request libVA Backend
