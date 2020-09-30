@@ -80,3 +80,4 @@ struct v4l2_ctrl_mpeg2_quantization {
 };
 
 #endif
+
