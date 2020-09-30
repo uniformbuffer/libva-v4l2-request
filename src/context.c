@@ -217,7 +217,6 @@ VAStatus RequestDestroyContext(VADriverContextP context, VAContextID context_id)
 	struct object_context *context_object;
 	struct video_format *video_format;
 	unsigned int output_type, capture_type;
-	VAStatus status;
 	int rc;
 
 	video_format = driver_data->video_format;
@@ -241,6 +240,7 @@ VAStatus RequestDestroyContext(VADriverContextP context, VAContextID context_id)
 
 	/* Buffers liberation */
 /*
+	VAStatus status;
 	status = RequestDestroySurfaces(context, context_object->surfaces_ids,
 					context_object->surfaces_count);
 	if (status != VA_STATUS_SUCCESS)
