@@ -158,16 +158,16 @@ VAStatus RequestCreateContext(VADriverContextP context, VAConfigID config_id,
 			status = VA_STATUS_ERROR_ALLOCATION_FAILED;
 			goto error;
 		}
-
+    /*
 		source_data = mmap(NULL, length, PROT_READ | PROT_WRITE,
 				   MAP_SHARED, driver_data->video_fd, offset);
 		if (source_data == MAP_FAILED) {
 			status = VA_STATUS_ERROR_ALLOCATION_FAILED;
 			goto error;
 		}
-
+    */
 		surface_object->source_index = index;
-		surface_object->source_data = source_data;
+		//surface_object->source_data = source_data;
 		surface_object->source_size = length;
 	}
 
@@ -197,9 +197,10 @@ VAStatus RequestCreateContext(VADriverContextP context, VAConfigID config_id,
 	goto complete;
 
 error:
+  /*
 	if (source_data != MAP_FAILED)
 		munmap(source_data, length);
-
+  */
 	if (ids != NULL)
 		free(ids);
 

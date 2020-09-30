@@ -129,7 +129,7 @@ VAStatus RequestCreateSurfaces2(VADriverContextP context, unsigned int format,
 				       video_format->v4l2_buffers_count);
 		if (rc < 0)
 			return VA_STATUS_ERROR_ALLOCATION_FAILED;
-
+/*
 		for (j = 0; j < video_format->v4l2_buffers_count; j++) {
 			surface_object->destination_map[j] =
 				mmap(NULL,
@@ -141,7 +141,7 @@ VAStatus RequestCreateSurfaces2(VADriverContextP context, unsigned int format,
 			if (surface_object->destination_map[j] == MAP_FAILED)
 				return VA_STATUS_ERROR_ALLOCATION_FAILED;
 		}
-
+*/
 		/*
 		 * FIXME: Handle this per-pixelformat, trying to generalize it
 		 * is not a reasonable approach. The final description should be
@@ -227,7 +227,7 @@ VAStatus RequestDestroySurfaces(VADriverContextP context,
 		surface_object = SURFACE(driver_data, surfaces_ids[i]);
 		if (surface_object == NULL)
 			return VA_STATUS_ERROR_INVALID_SURFACE;
-
+/*
 		if (surface_object->source_data != NULL &&
 		    surface_object->source_size > 0)
 			munmap(surface_object->source_data,
@@ -238,7 +238,7 @@ VAStatus RequestDestroySurfaces(VADriverContextP context,
 			    surface_object->destination_map_lengths[j] > 0)
 				munmap(surface_object->destination_map[j],
 				       surface_object->destination_map_lengths[j]);
-
+*/
 		if (surface_object->request_fd > 0)
 			close(surface_object->request_fd);
 
