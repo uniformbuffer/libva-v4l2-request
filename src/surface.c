@@ -202,6 +202,7 @@ VAStatus RequestCreateSurfaces2(VADriverContextP context, unsigned int format,
 
 		surface_object->request_fd = -1;
 
+    printf("Created surface %s\n", id);
 		surfaces_ids[i] = id;
 	}
 
@@ -244,6 +245,7 @@ VAStatus RequestDestroySurfaces(VADriverContextP context,
 
 		object_heap_free(&driver_data->surface_heap,
 				 (struct object_base *)surface_object);
+    printf("Destroyed surface %s\n", surfaces_ids[i]);
 	}
 
 	return VA_STATUS_SUCCESS;
