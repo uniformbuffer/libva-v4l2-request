@@ -43,4 +43,4 @@ config.sub
 configure
 depcomp
 TAGS
-build/*
+build/
