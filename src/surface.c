@@ -208,8 +208,8 @@ VAStatus RequestCreateSurfaces2(VADriverContextP context, unsigned int format,
 	return VA_STATUS_SUCCESS;
 }
 
-VAStatus RequestCreateSurfaces(VADriverContextP context, int width, int height,
-			       int format, int surfaces_count,
+VAStatus RequestCreateSurfaces(VADriverContextP context, unsigned int width, unsigned int height,
+			       unsigned int format, unsigned int surfaces_count,
 			       VASurfaceID *surfaces_ids)
 {
 	return RequestCreateSurfaces2(context, format, width, height,
